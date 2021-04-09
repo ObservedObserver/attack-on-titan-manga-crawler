@@ -30,7 +30,7 @@ def is_page_end(soup, current_page_num):
             if page_num_matches is not None:
                 page_num = int(page_num_matches.group(1))
                 max_page_number = max(max_page_number, page_num)
-    return max_page_number >= current_page_num
+    return max_page_number <= current_page_num
 
 
 def get_image_url(soup):
