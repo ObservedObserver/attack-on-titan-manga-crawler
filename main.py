@@ -7,7 +7,7 @@ import os
 
 host_path = 'https://p5.manhuapan.com'
 start_chepter_num = 126
-end_chepter_num = 127
+end_chepter_num = 138
 base_folder = './attack-on-titan'
 
 
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     for chepter_num in range(start_chepter_num, end_chepter_num + 1):
         folder_path = base_folder + '/' + str(chepter_num)
         create_chepter_folder_if_not_exists(folder_path)
-        page_num = 43
+        page_num = 0
         is_end = False
         while not is_end:
             soup = get_page_soup(chepter_num, page_num)
