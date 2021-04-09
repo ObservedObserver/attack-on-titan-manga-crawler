@@ -6,14 +6,14 @@ import time
 import os
 
 host_path = 'https://p5.manhuapan.com'
-start_chepter_num = 125
-end_chepter_num = 126
+start_chepter_num = 126
+end_chepter_num = 127
 base_folder = './attack-on-titan'
 
 
 def get_page_soup(chepter_num, page_num):
     res = req.get('https://manhua.fzdm.com/39/%d/index_%d.html' % (chepter_num, page_num))
-    print('https://manhua.fzdm.com/39/' + str(chepter_num) + 'index_' + str(page_num) + '.html', res)
+    print('https://manhua.fzdm.com/39/%d/index_%d.html' % (chepter_num, page_num), res)
     html_text = res.text
     soup = BeautifulSoup(html_text, 'html.parser')
     return soup
@@ -26,10 +26,11 @@ def is_page_end(soup, current_page_num):
         page_list = nav[0].select('a')
         for page in page_list:
             page_file_name = page['href']
-            page_num_matches = re.search(r'[0-9]+', page_file_name)
-            page_num = int(page_num_matches.group())
-            max_page_number = max(max_page_number, page_num)
-    return max_page_number == current_page_num
+            page_num_matches = re.search(r'index_([0-9]+)\.html', page_file_name)
+            if page_num_matches is not None:
+                page_num = int(page_num_matches.group(1))
+                max_page_number = max(max_page_number, page_num)
+    return max_page_number >= current_page_num
 
 
 def get_image_url(soup):
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     for chepter_num in range(start_chepter_num, end_chepter_num + 1):
         folder_path = base_folder + '/' + str(chepter_num)
         create_chepter_folder_if_not_exists(folder_path)
-        page_num = 0
+        page_num = 43
         is_end = False
         while not is_end:
             soup = get_page_soup(chepter_num, page_num)
